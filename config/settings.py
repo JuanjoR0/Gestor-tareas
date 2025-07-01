@@ -1,12 +1,14 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-ardc7k11&24sa5dc&m%kip(c2_5aobn@_x2bd#p5@(&(ckpyyd'
-DEBUG = True
-ALLOWED_HOSTS = []
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['*']
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
@@ -40,7 +42,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend' / 'build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,12 +92,15 @@ LOGIN_URL = '/login/'
 # CORS y CSRF para el frontend en localhost
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://tu-app-en-render.onrender.com",  
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://tu-app-en-render.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-]
+
 
 # Configuración de DRF + JWT
 REST_FRAMEWORK = {
@@ -117,3 +122,4 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
+STATIC_ROOT = BASE_DIR / 'staticfiles'
