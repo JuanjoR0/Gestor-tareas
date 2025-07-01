@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+<div class="py-5">
+  <div class="d-flex justify-content-between align-items-center flex-nowrap w-100 px-3">
+    
+    <div class="" style="max-width: 600px; font-size: 1rem;">
+      <div class="card shadow-sm border-0 rounded-4 h-100">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Instrucciones proyecto</h2>
+           <p>
+              Este proyecto es un sistema tipo <strong>Trello</strong>.
+              Permite crear tableros, listas y tareas (asignar a usuarios, poner fechas límite, prioridades y etiquetar). Las tareas se pueden mover entre listas mediante drag & drop.
+          </p>
+          <h3 class="mt-4">🧩 Tecnologías utilizadas</h3>
+          <ul>
+              <li>Backend: Django + Django REST Framework</li>
+              <li>Frontend: React + dnd-kit</li>
+              <li>Base de datos: SQLite</li>
+          </ul>
+          <h3 class="mt-4">👤 Usuario de prueba (Superadmin)</h3>
+          <ul>
+              <li><strong>Usuario: </strong>Juanjo</li>
+              <li><strong>Contraseña: </strong>usuario1234</li>
+          </ul>
+          <h3 class="mt-4">🔐 Accesos disponibles</h3>
+          <p class="d-flex flex-wrap gap-2">
+            <a href="/admin/" class="btn btn-sm btn-secondary d-inline-block">⚙️ Panel admin</a>
+            <a href="http://localhost:3000/" class="btn btn-sm btn-success d-inline-block">🚀 Frontend (React)</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 2px; background-color: rgba(0, 0, 0, 0.65); min-height: 500px;"></div>
+
+    <div style="min-width: 300px;">
+      <div class="card shadow-sm border-0 rounded-4 w-100">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Iniciar sesión</h2>
+
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.
+            </div>
+          {% endif %}
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

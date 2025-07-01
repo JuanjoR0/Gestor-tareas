@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+<a href="http://localhost:3000/" class="btn btn-sm btn-success d-inline-block" style="margin-bottom:50px;">🚀 Ir al Frontend (React)</a>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📋 Mis tableros</h2>
+    <a href="{% url 'create_board' %}" class="btn btn-success" style="background-color:#0B5ED7;">+ Crear nuevo tablero</a>
+  </div>
+
+  {% if boards %}
+    <div class="row g-4">
+      {% for board in boards %}
+        <div class="col-12">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'board_detail' board.id %}" class="text-decoration-none">{{ board.name }}</a>
+              </h4>
+              <p class="text-muted mb-3">👤 Dueño: {{ board.owner.username }}</p>
+
+              {% if board.task_lists.all %}
+                {% for task_list in board.task_lists.all %}
+                  <div class="mb-4">
+                    <h5>{{ task_list.name }}</h5>
+                    <p>
+                      <a href="{% url 'task_create' board.id %}?list_id={{ task_list.id }}" class="btn btn-sm btn-outline-primary">
+                        + Añadir tarea
+                      </a>
+                    </p>
+
+                    {% if task_list.tasks.all %}
+                      <ul class="list-group list-group-flush">
+                        {% for task in task_list.tasks.all %}
+                          <li class="list-group-item">
+                            <strong>{{ task.title }}</strong> – {{ task.description }}
+                            <div class="mt-2">
+                              <a href="{% url 'task_edit' board.id task.id %}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                              <a href="{% url 'task_delete' board.id task.id %}" class="btn btn-sm btn-danger">🗑️ Borrar</a>
+                            </div>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% else %}
+                      <p class="text-muted">No hay tareas en esta lista.</p>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p class="text-muted">Este tablero no tiene listas de tareas.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      No tienes tableros todavía. ¡Crea uno para comenzar!
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

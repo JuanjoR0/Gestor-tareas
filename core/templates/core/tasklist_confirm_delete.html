@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 500px;">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body text-center">
+      <h2 class="card-title text-danger mb-4">⚠️ Confirmar borrado</h2>
+      <p class="fs-5">¿Estás seguro de que quieres borrar la lista <strong>"{{ tasklist.name }}"</strong>?</p>
+
+      <form method="post" class="d-flex justify-content-center gap-3 mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">🗑️ Sí, borrar</button>
+        <a href="{% url 'board_detail' board.id %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

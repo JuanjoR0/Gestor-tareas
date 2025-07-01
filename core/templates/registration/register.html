@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 500px;">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">📝 Registrarse</h2>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success">✅ Registrarse</button>
+        </div>
+      </form>
+
+      <div class="mt-4 text-center">
+        <p class="mb-0">¿Ya tienes cuenta?</p>
+        <a href="{% url 'login' %}" class="btn btn-link">🔐 Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

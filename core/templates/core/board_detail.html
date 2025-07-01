@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📌 Tablero: {{ board.name }}</h2>
+    <a href="{% url 'tasklist_create' board.id %}" class="btn btn-success" style="background-color:#0B5ED7;">
+      + Añadir nueva lista
+    </a>
+  </div>
+
+  {% if task_lists %}
+    <div class="row g-4">
+      {% for task_list in task_lists %}
+        <div class="col-12">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">{{ task_list.name }}</h4>
+                <div class="d-flex gap-2">
+                  <a href="{% url 'tasklist_edit' board.id task_list.id %}" class="btn btn-sm btn-warning">✏️</a>
+                  <a href="{% url 'tasklist_delete' board.id task_list.id %}" class="btn btn-sm btn-danger">🗑️</a>
+                </div>
+              </div>
+
+              <p>
+                <a href="{% url 'task_create' board.id %}?list_id={{ task_list.id }}" class="btn btn-sm btn-outline-primary">
+                  + Añadir tarea
+                </a>
+              </p>
+
+              {% if task_list.tasks.all %}
+                <ul class="list-group list-group-flush">
+                  {% for task in task_list.tasks.all %}
+                    <li class="list-group-item">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <strong>{{ task.title }}</strong> — <span class="text-muted">{{ task.priority }}</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                          <a href="{% url 'task_edit' board.id task.id %}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                          <a href="{% url 'task_delete' board.id task.id %}" class="btn btn-sm btn-outline-danger">🗑️</a>
+                        </div>
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-muted">No hay tareas en esta lista.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info mt-4">
+      No hay listas en este tablero.
+    </div>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{% url 'home' %}" class="btn btn-link">← Volver a inicio</a>
+  </div>
+</div>
+{% endblock %}

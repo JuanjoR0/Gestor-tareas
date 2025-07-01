@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+*.sqlite3
+
+# Django static
+staticfiles/
+
+# React
+node_modules/
+build/
+dist/
+
+# IDEs y config
+.vscode/
+.idea/
+*.log

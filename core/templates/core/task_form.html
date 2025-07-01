@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body">
+      <h2 class="card-title mb-4 text-center">
+        {% if form.instance.pk %}✏️ Editar{% else %}🆕 Crear{% endif %} tarea
+      </h2>
+
+      {% if task_list %}
+        <p><strong>📋 Lista:</strong> {{ task_list.name }}</p>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+        </div>
+      </form>
+
+      <div class="mt-4 text-center">
+        <a href="{% url 'board_detail' board.id %}" class="btn btn-link">← Volver al tablero</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const select = document.getElementById('id_tags');
+
+    if (select) {
+      select.addEventListener('change', function () {
+        const selected = Array.from(select.selectedOptions);
+        if (selected.length > 2) {
+          selected[selected.length - 1].selected = false;
+          alert('Solo puedes seleccionar hasta 2 etiquetas.');
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

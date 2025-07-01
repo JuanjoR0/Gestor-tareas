@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">
+        {% if form.instance.pk %}
+          ✏️ Editar lista de tareas
+        {% else %}
+          🆕 Crear lista de tareas
+        {% endif %}
+        <div class="fs-6 text-muted mt-2">en "{{ board.name }}"</div>
+      </h2>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+        </div>
+      </form>
+
+      <div class="mt-4 text-center">
+        <a href="{% url 'board_detail' board.id %}" class="btn btn-link">← Volver al tablero</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+Para ejecutar el proyecto;
+
+en este directorio (venv) PS C:\Users\juanj\OneDrive\Escritorio\Master\MisProyectosTerminados\django-GestorTareas>
+arrancar el BACKEND (Django) en http://127.0.0.1:8000/                 python manage.py runserver
+
+arrancar el FRONTEND (react) en http://localhost:3000/                 npm start
+
+Para genera los archivos que representan los cambios en tus modelos    python manage.py makemigrations
+Para  aplicar esos cambios a la base de datos (actualizar las tablas)  python manage.py migrate
+
+Para ver todas las urls definidas;  python manage.py show_urls
+
+
+
+Este proyecto está hecho con:
+
+BACKEND;
+Lenguaje: Python
+Framework: Django
+API: Django REST Framework (DRF)
+
+FRONTEND;
+Lenguaje: JavaScript
+Framework/Biblioteca: React
+Librerías: @dnd-kit (🧲 Para manejar el drag & drop (arrastrar y soltar).), axios ( Para hacer peticiones HTTP a tu API de Django REST.), ReactDOM
+
+
+
+Pasos hechos;
+---BACKEND---
+1.Configurar django y crear las principales rutas y carpetas 
+2.Crear en la administracion CORE (Boards, Task lists, Tasks)
+3.Crear un superusuario en administracion
+4.Crear las vistas de login y register y definirlas junto a urls.py (tambien añadido cosas en config/settings.py)
+5.Proteger paginas con login obligatorio usando el decorador login_required en core/views.py
+6.Crear core/home.html y base.html
+7.Crear la funcionalidad para crear nuevos tableros (Boards) desde la interfaz web.
+8.Listar en el home los tableros donde el usuario sea propietario o miembro.
+9.CRUD completo de tareas dentro de los tableros (crear, editar, borrar tareas)
+---FRONTEND---
+10.Mostrar tableros con listas de tareas
+11.Mover tareas entre listas de un mismo tablero
+11.Guardar cambios en bd (cambio de task en lista y posicion)
+12.Añadir prioridades, etiquetas o fechas límite a las tareas, imagen de perfiles de la task
