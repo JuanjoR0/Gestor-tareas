@@ -14,7 +14,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', views.register, name='register'),
 
-   
+    # Vista principal de Django
+    path('', views.home, name='home'),
 
     # Boards y tareas
     path('board/create/', views.create_board, name='create_board'),
