@@ -46,7 +46,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core' / 'templates' / 'frontend'],
+        'DIRS': [BASE_DIR / 'core' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,12 +97,13 @@ LOGIN_URL = '/login/'
 # CORS y CSRF para el frontend en localhost
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://tu-app-en-render.onrender.com",  
+    "https://gestor-tareas-o1zj.onrender.com",  
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://tu-app-en-render.onrender.com",
+    "https://gestor-tareas-o1zj.onrender.com",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 
