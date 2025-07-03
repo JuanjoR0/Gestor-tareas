@@ -13,6 +13,7 @@ class TaskSerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
     tags_input = serializers.CharField(write_only=True, required=False)
     assigned_to = AssignedUserSerializer(many=True, read_only=True)
+    position = serializers.IntegerField(required=False)
 
     class Meta:
         model = Task

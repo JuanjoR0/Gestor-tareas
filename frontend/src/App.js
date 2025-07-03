@@ -244,13 +244,23 @@ export default function App() {
     const [movedTask] = sourceList.tasks.splice(movingTaskIndex, 1);
     destinationList.tasks.push(movedTask);
 
+    // Recalcular las posiciones (índice) en la nueva lista
+    destinationList.tasks.forEach((task, index) => {
+      task.position = index;
+    });
+
     setBoards(updatedBoards);
+
+    // Obtener nueva posición y task_list ID
+    const newTaskListId = parseInt(destinationListId.replace("list", ""), 10);
+    const newPosition = destinationList.tasks.length - 1;
 
     try {
       await axios.patch(
         `${API_BASE_URL}/api/tasks/${taskIdNum}/`,
         {
-          task_list: parseInt(destinationListId.replace("list", ""), 10),
+          task_list: newTaskListId,
+          position: newPosition
         },
         {
           headers: {
@@ -261,7 +271,7 @@ export default function App() {
     } catch (error) {
       console.error("Error al actualizar la tarea en el backend:", error);
     }
-  };
+
 
   if (userAuthenticated === null) return <p>Cargando...</p>;
 
