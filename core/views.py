@@ -23,10 +23,10 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 class IsTaskOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
-        # Permitir solo lectura
+        
         if request.method in SAFE_METHODS:
             return True
-        # Solo permitir edición si el usuario es el creador o responsable
+        
         return obj.created_by == request.user or request.user in obj.assigned_to.all()
 
 
@@ -68,10 +68,10 @@ def register(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return JsonResponse({'message': 'Sesión cerrada'})  # para API/React
+        return JsonResponse({'message': 'Sesión cerrada'})  
     elif request.method == 'GET':
         logout(request)
-        return redirect('login')  # para usuarios que usan las plantillas (como base.html)
+        return redirect('login')  
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 

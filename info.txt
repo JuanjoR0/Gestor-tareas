@@ -1,11 +1,11 @@
+https://gestor-tareas-o1zj.onrender.com/
+
 Subido a render.com;
 juanjorodriguez682@gmail.com
 (conectado con cuenta de git)
 ---Enviroments variables---
 DEBUG           False
 SECRET_KEY      A1b2C3d4E5f6
-
-https://gestor-tareas-o1zj.onrender.com/login/?next=/
 
 Para ejecutar el proyecto en local;
 

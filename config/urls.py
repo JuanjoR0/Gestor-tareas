@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-# API routing
+
 router = DefaultRouter()
 router.register(r'boards', BoardViewSet, basename='board')
 router.register(r'tasks', TaskViewSet, basename='task')
@@ -21,8 +21,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
-# ⚠️ ¡Esto debe ir al final!
-# Sirve React frontend excepto si la URL empieza con /admin, /api o /static
+
 urlpatterns += [
     re_path(r'^(?!admin|api|static|media|logout).*$', FrontendAppView.as_view(), name='frontend'),
 ]

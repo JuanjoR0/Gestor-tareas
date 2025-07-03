@@ -35,14 +35,14 @@ class TaskSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
     
 class TaskListSerializer(serializers.ModelSerializer):
-    tasks = serializers.SerializerMethodField()  # 👈 Usamos método personalizado
+    tasks = serializers.SerializerMethodField()  
 
     class Meta:
         model = TaskList
         fields = ['id', 'name', 'tasks']
 
     def get_tasks(self, obj):
-        ordered_tasks = obj.tasks.order_by('position')  # 👈 Aquí se ordenan por posición
+        ordered_tasks = obj.tasks.order_by('position')  
         return TaskSerializer(ordered_tasks, many=True).data
 
 class BoardSerializer(serializers.ModelSerializer):
