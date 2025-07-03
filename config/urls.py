@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 
 # View que carga React sin CSRF (para evitar conflictos)
 class FrontendAppView(TemplateView):
-    template_name = "index.html"
+    template_name = "frontend/index.html"
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
