@@ -92,7 +92,7 @@ STATICFILES_DIRS = [
 # Redirecciones
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
-LOGIN_URL = None
+LOGIN_URL = '/login/'
 
 # CORS y CSRF para el frontend en localhost
 CORS_ALLOWED_ORIGINS = [
