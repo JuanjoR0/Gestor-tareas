@@ -12,14 +12,17 @@ router = DefaultRouter()
 router.register(r'boards', BoardViewSet, basename='board')
 router.register(r'tasks', TaskViewSet, basename='task')
 
-# URL patterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('logout/', logout_view, name='logout'),
     path('', include('core.urls')),
+    path('api/', include(router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
 
-    # Esta ruta SIEMPRE al final: sirve React para cualquier ruta no encontrada (incluye /)
-    re_path(r'^.*$', FrontendAppView.as_view(), name='frontend'),
+# ⚠️ ¡Esto debe ir al final!
+# Sirve React frontend excepto si la URL empieza con /admin, /api o /static
+urlpatterns += [
+    re_path(r'^(?!admin|api|static|media|logout).*$', FrontendAppView.as_view(), name='frontend'),
 ]

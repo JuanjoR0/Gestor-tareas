@@ -194,8 +194,8 @@ def task_delete(request, board_id, task_id):
 class FrontendAppView(View):
     def get(self, request):
         try:
-            with open(os.path.join(settings.BASE_DIR, 'core', 'templates', 'frontend', 'index.html')) as f:
+            index_path = os.path.join(settings.BASE_DIR, 'core', 'templates', 'frontend', 'index.html')
+            with open(index_path, encoding='utf-8') as f:
                 return HttpResponse(f.read())
         except FileNotFoundError:
             return HttpResponse("El archivo index.html no se encontró, asegúrate de haber corrido npm run build.", status=501)
-
