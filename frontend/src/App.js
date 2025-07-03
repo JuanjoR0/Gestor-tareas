@@ -228,12 +228,9 @@ export default function App() {
     }
 
     if (!sourceListId || !destinationListId || !sourceBoardId) return;
-    if (sourceListId === destinationListId) return;
 
     const updatedBoards = { ...boards };
     const board = updatedBoards[sourceBoardId];
-    if (!board) return;
-
     const sourceList = board.lists[sourceListId];
     const destinationList = board.lists[destinationListId];
     if (!sourceList || !destinationList) return;
@@ -244,36 +241,28 @@ export default function App() {
     const [movedTask] = sourceList.tasks.splice(movingTaskIndex, 1);
     destinationList.tasks.push(movedTask);
 
-    
+    // ✅ Reordenar tareas en destino
     destinationList.tasks.forEach((task, index) => {
       task.position = index;
+
+      if (task.id === movedTask.id) {
+        axios.patch(
+          `${API_BASE_URL}/api/tasks/${taskIdNum}/`,
+          {
+            task_list: parseInt(destinationListId.replace("list", ""), 10),
+            position: index,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access")}`,
+            },
+          }
+        ).catch(err => console.error("Error al actualizar tarea:", err));
+      }
     });
 
     setBoards(updatedBoards);
-
-    
-    const newTaskListId = parseInt(destinationListId.replace("list", ""), 10);
-    const newPosition = destinationList.tasks.length - 1;
-
-    try {
-      await axios.patch(
-        `${API_BASE_URL}/api/tasks/${taskIdNum}/`,
-        {
-          task_list: newTaskListId,
-          position: newPosition
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Error al actualizar la tarea en el backend:", error);
-    }
-
-
-  if (userAuthenticated === null) return <p>Cargando...</p>;
+  };
 
   const fetchUserData = () => {
     const token = localStorage.getItem('access');
@@ -286,52 +275,52 @@ export default function App() {
     .catch(() => console.log("Error al obtener usuario"));
   };
 
+  if (userAuthenticated === null) return <p>Cargando...</p>;
+
   if (!userAuthenticated) return <LoginForm onLogin={() => {
     setUserAuthenticated(true);
     fetchUserData();
   }} />;
 
   return (
-    <>
-      <div style={{width: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center'}} >
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '12px',
-          padding: '12px 20px',
-          fontSize: '16px',
-          fontFamily: 'sans-serif',
-          marginTop: '40px',
-          marginRight: '40px',
-        }}>
-          <span> Bienvenido  <strong>{user?.username}</strong></span>
-          <span style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }} onClick={handleLogout}>
-          | Cerrar sesión
-        </span>
-        </div>
-
-        <div style={{ padding: '40px' }}>
-          {Object.entries(boards).map(([boardId, board]) => (
-            <div key={boardId} style={{ marginBottom: '60px' }}>
-              <h2 style={{ marginBottom: '20px' }}>{board.name}</h2>
-              <div style={{ display: 'flex', gap: '40px', justifyContent: 'center' }}>
-                <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragEnd={handleDragEnd}>
-                  {Object.entries(board.lists).map(([listKey, listData]) => (
-                    <DroppableList key={listKey} id={listKey} listName={listData.name}>
-                      <SortableContext items={listData.tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-                        {listData.tasks.map((task) => (
-                          <SortableItem key={task.id} {...task} containerId={listKey} />
-                        ))}
-                      </SortableContext>
-                    </DroppableList>
-                  ))}
-                </DndContext>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div style={{width: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center'}} >
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '12px 20px',
+        fontSize: '16px',
+        fontFamily: 'sans-serif',
+        marginTop: '40px',
+        marginRight: '40px',
+      }}>
+        <span> Bienvenido  <strong>{user?.username}</strong></span>
+        <span style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }} onClick={handleLogout}>
+        | Cerrar sesión
+      </span>
       </div>
-    </>
+
+      <div style={{ padding: '40px' }}>
+        {Object.entries(boards).map(([boardId, board]) => (
+          <div key={boardId} style={{ marginBottom: '60px' }}>
+            <h2 style={{ marginBottom: '20px' }}>{board.name}</h2>
+            <div style={{ display: 'flex', gap: '40px', justifyContent: 'center' }}>
+              <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragEnd={handleDragEnd}>
+                {Object.entries(board.lists).map(([listKey, listData]) => (
+                  <DroppableList key={listKey} id={listKey} listName={listData.name}>
+                    <SortableContext items={listData.tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+                      {listData.tasks.map((task) => (
+                        <SortableItem key={task.id} {...task} containerId={listKey} />
+                      ))}
+                    </SortableContext>
+                  </DroppableList>
+                ))}
+              </DndContext>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
