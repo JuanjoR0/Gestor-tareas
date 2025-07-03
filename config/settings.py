@@ -92,7 +92,7 @@ STATICFILES_DIRS = [
 # Redirecciones
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'
 
 # CORS y CSRF para el frontend en localhost
 CORS_ALLOWED_ORIGINS = [
@@ -115,7 +115,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # Para frontend moderno
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
 }
 

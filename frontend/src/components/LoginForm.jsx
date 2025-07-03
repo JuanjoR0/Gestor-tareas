@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LoginForm.css'; 
+import './LoginForm.css';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 export default function LoginForm({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -12,7 +14,7 @@ export default function LoginForm({ onLogin }) {
     setError('');
 
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/token/', {
+      const res = await axios.post(`${API_BASE_URL}/api/token/`, {
         username,
         password,
       });
@@ -54,11 +56,10 @@ export default function LoginForm({ onLogin }) {
         {error && <p className="error">{error}</p>}
 
         <p style={{ marginTop: '16px' }}>
-          <a href="http://127.0.0.1:8000/" style={{ color: '#007bff', textDecoration: 'none' }}>
-            ← Volver al Backend
+          <a href="/" style={{ color: '#007bff', textDecoration: 'none' }}>
+            ← Volver al inicio
           </a>
         </p>
-
       </form>
     </div>
   );

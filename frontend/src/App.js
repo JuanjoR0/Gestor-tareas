@@ -17,6 +17,7 @@ import LoginForm from './components/LoginForm';
 import { pointerWithin } from '@dnd-kit/core';
 
 axios.defaults.withCredentials = true;
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 function SortableItem({ id, content, priority, tags, dueDate, assignedTo, containerId }) {
   tags = Array.isArray(tags) ? tags : [];
@@ -97,8 +98,7 @@ function SortableItem({ id, content, priority, tags, dueDate, assignedTo, contai
           for (let i = 0; i < str.length; i++) {
             hash = str.charCodeAt(i) + ((hash << 5) - hash);
           }
-          const color = `hsl(${hash % 360}, 70%, 60%)`;
-          return color;
+          return `hsl(${hash % 360}, 70%, 60%)`;
         };
 
         const bgColor = stringToColor(user.username);
@@ -144,23 +144,23 @@ export default function App() {
   const sensors = useSensors(useSensor(PointerSensor));
 
   useEffect(() => {
-  const token = localStorage.getItem('access');
-  if (!token) return setUserAuthenticated(false);
+    const token = localStorage.getItem('access');
+    if (!token) return setUserAuthenticated(false);
 
-  const headers = { Authorization: `Bearer ${token}` };
+    const headers = { Authorization: `Bearer ${token}` };
 
-  axios.get('http://127.0.0.1:8000/api/user/', { headers })
-    .then((res) => {
-      setUser(res.data);
-      setUserAuthenticated(true);
-    })
-    .catch(() => setUserAuthenticated(false));
-}, []);
+    axios.get(`${API_BASE_URL}/api/user/`, { headers })
+      .then((res) => {
+        setUser(res.data);
+        setUserAuthenticated(true);
+      })
+      .catch(() => setUserAuthenticated(false));
+  }, []);
 
   useEffect(() => {
     if (!userAuthenticated) return;
     const token = localStorage.getItem('access');
-    axios.get('http://127.0.0.1:8000/api/boards/', {
+    axios.get(`${API_BASE_URL}/api/boards/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -191,7 +191,7 @@ export default function App() {
   }, [userAuthenticated]);
 
   const handleLogout = () => {
-    axios.post('http://127.0.0.1:8000/logout/')
+    axios.post(`${API_BASE_URL}/logout/`)
       .then(() => {
         localStorage.removeItem('access');
         setUser(null);
@@ -248,7 +248,7 @@ export default function App() {
 
     try {
       await axios.patch(
-        `http://127.0.0.1:8000/api/tasks/${taskIdNum}/`,
+        `${API_BASE_URL}/api/tasks/${taskIdNum}/`,
         {
           task_list: parseInt(destinationListId.replace("list", ""), 10),
         },
@@ -269,13 +269,12 @@ export default function App() {
     const token = localStorage.getItem('access');
     if (!token) return;
 
-    axios.get('http://127.0.0.1:8000/api/user/', {
+    axios.get(`${API_BASE_URL}/api/user/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then(res => setUser(res.data))  // ← Aquí se guarda correctamente
+    .then(res => setUser(res.data))
     .catch(() => console.log("Error al obtener usuario"));
   };
-
 
   if (!userAuthenticated) return <LoginForm onLogin={() => {
     setUserAuthenticated(true);
