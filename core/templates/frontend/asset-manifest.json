@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.85e08998.css",
-    "main.js": "/static/js/main.8b70049e.js",
-    "static/js/453.670e15c7.chunk.js": "/static/js/453.670e15c7.chunk.js",
-    "index.html": "/index.html",
-    "main.85e08998.css.map": "/static/css/main.85e08998.css.map",
-    "main.8b70049e.js.map": "/static/js/main.8b70049e.js.map",
-    "453.670e15c7.chunk.js.map": "/static/js/453.670e15c7.chunk.js.map"
+    "main.css": "https://gestor-tareas-o1zj.onrender.com/static/css/main.85e08998.css",
+    "main.js": "https://gestor-tareas-o1zj.onrender.com/static/js/main.119cbe39.js",
+    "static/js/453.670e15c7.chunk.js": "https://gestor-tareas-o1zj.onrender.com/static/js/453.670e15c7.chunk.js",
+    "index.html": "https://gestor-tareas-o1zj.onrender.com/index.html",
+    "main.85e08998.css.map": "https://gestor-tareas-o1zj.onrender.com/static/css/main.85e08998.css.map",
+    "main.119cbe39.js.map": "https://gestor-tareas-o1zj.onrender.com/static/js/main.119cbe39.js.map",
+    "453.670e15c7.chunk.js.map": "https://gestor-tareas-o1zj.onrender.com/static/js/453.670e15c7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.85e08998.css",
-    "static/js/main.8b70049e.js"
+    "static/js/main.119cbe39.js"
   ]
 }
