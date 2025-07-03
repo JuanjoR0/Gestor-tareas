@@ -21,5 +21,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # Esta ruta SIEMPRE al final: sirve React para cualquier ruta no encontrada (incluye /)
-    re_path(r'^frontend/.*$', FrontendAppView.as_view(), name='frontend'),
+    re_path(r'^.*$', FrontendAppView.as_view(), name='frontend'),
 ]
