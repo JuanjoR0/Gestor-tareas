@@ -32,10 +32,6 @@ class TaskSerializer(serializers.ModelSerializer):
         tags_input = validated_data.pop("tags_input", "")
         if tags_input:
             validated_data["tags"] = tags_input
-
-        # Asignar automáticamente el usuario autenticado como creador
-        validated_data["created_by"] = self.context["request"].user
-
         return super().create(validated_data)
     
 class TaskListSerializer(serializers.ModelSerializer):

@@ -61,27 +61,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if DATABASE_URL:
-    # Render u otro entorno con DATABASE_URL
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-else:
-    # Entorno local sin DATABASE_URL
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
