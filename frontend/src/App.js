@@ -200,69 +200,76 @@ export default function App() {
       .catch(console.error);
   };
 
-  const handleDragEnd = async (event) => {
-    const { active, over } = event;
-    if (!active || !over || active.id === over.id) return;
-    if (typeof over.id !== "string") return;
+    const handleDragEnd = async (event) => {
+      const { active, over } = event;
+      if (!active || !over || active.id === over.id) return;
+      if (typeof over.id !== "string") return;
 
-    const taskId = active.id;
-    const taskIdNum = parseInt(taskId.replace("task-", ""), 10);
+      const taskId = active.id;
+      const taskIdNum = parseInt(taskId.replace("task-", ""), 10);
 
-    let sourceListId = null;
-    let destinationListId = null;
-    let sourceBoardId = null;
+      let sourceListId = null;
+      let destinationListId = null;
+      let sourceBoardId = null;
 
-    for (const [boardId, board] of Object.entries(boards)) {
-      for (const [listId, list] of Object.entries(board.lists)) {
-        if (list.tasks.some((task) => task.id === taskId)) {
-          sourceListId = listId;
-          sourceBoardId = boardId;
+      for (const [boardId, board] of Object.entries(boards)) {
+        for (const [listId, list] of Object.entries(board.lists)) {
+          if (list.tasks.some((task) => task.id === taskId)) {
+            sourceListId = listId;
+            sourceBoardId = boardId;
+          }
         }
       }
-    }
 
-    if (over.id.startsWith("list")) {
-      destinationListId = over.id;
-    } else if (over.data?.current?.sortable?.containerId) {
-      destinationListId = over.data.current.sortable.containerId;
-    }
+      if (over.id.startsWith("list")) {
+        destinationListId = over.id;
+      } else if (over.data?.current?.sortable?.containerId) {
+        destinationListId = over.data.current.sortable.containerId;
+      }
 
-    if (!sourceListId || !destinationListId || !sourceBoardId) return;
+      if (!sourceListId || !destinationListId || !sourceBoardId) return;
 
-    const updatedBoards = { ...boards };
-    const board = updatedBoards[sourceBoardId];
-    const sourceList = board.lists[sourceListId];
-    const destinationList = board.lists[destinationListId];
-    if (!sourceList || !destinationList) return;
+      const updatedBoards = { ...boards };
+      const board = updatedBoards[sourceBoardId];
+      const sourceList = board.lists[sourceListId];
+      const destinationList = board.lists[destinationListId];
 
-    const movingTaskIndex = sourceList.tasks.findIndex((t) => t.id === taskId);
-    if (movingTaskIndex === -1) return;
+      if (!sourceList || !destinationList) return;
 
-    const [movedTask] = sourceList.tasks.splice(movingTaskIndex, 1);
-    destinationList.tasks.push(movedTask);
+      const movingTaskIndex = sourceList.tasks.findIndex((t) => t.id === taskId);
+      if (movingTaskIndex === -1) return;
 
-    // ✅ Reordenar tareas en destino
-    destinationList.tasks.forEach((task, index) => {
-      task.position = index;
+      const [movedTask] = sourceList.tasks.splice(movingTaskIndex, 1);
+      destinationList.tasks.push(movedTask);
 
-      if (task.id === movedTask.id) {
-        axios.patch(
+      // ✅ Reordenar posiciones en la lista destino
+      destinationList.tasks.forEach((task, index) => {
+        task.position = index;
+      });
+
+      // ✅ Actualiza el estado en React ANTES del PATCH (para UI instantánea)
+      setBoards(updatedBoards);
+
+      try {
+        const response = await axios.patch(
           `${API_BASE_URL}/api/tasks/${taskIdNum}/`,
           {
             task_list: parseInt(destinationListId.replace("list", ""), 10),
-            position: index,
+            position: movedTask.position,
           },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access")}`,
             },
           }
-        ).catch(err => console.error("Error al actualizar tarea:", err));
+        );
+        console.log("✅ PATCH exitoso:", response.data);
+      } catch (err) {
+        console.error("❌ Error al actualizar tarea:", err);
+        // Opcional: puedes revertir el estado si el PATCH falla
       }
-    });
+    };
 
-    setBoards(updatedBoards);
-  };
 
   const fetchUserData = () => {
     const token = localStorage.getItem('access');
