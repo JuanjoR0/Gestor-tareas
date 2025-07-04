@@ -20,6 +20,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.shortcuts import render
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+import logging
+from rest_framework.response import Response
+from rest_framework import status
 
 class IsTaskOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -28,12 +31,30 @@ class IsTaskOwnerOrReadOnly(BasePermission):
             return True
         
         return obj.created_by == request.user or request.user in obj.assigned_to.all()
+    
+logger = logging.getLogger(__name__) 
 
 
 class TaskViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+    def update(self, request, *args, **kwargs):
+        print("🛠️ PATCH recibido")
+        print("Datos recibidos:", request.data)
+
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+
+        if serializer.is_valid():
+            print("✔️ Datos validados correctamente")
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        else:
+            print("❌ Errores de validación:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BoardViewSet(ReadOnlyModelViewSet): 
     queryset = Board.objects.all()
