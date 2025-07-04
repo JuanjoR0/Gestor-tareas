@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 class TaskViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsTaskOwnerOrReadOnly]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
