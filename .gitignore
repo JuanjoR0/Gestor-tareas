@@ -7,15 +7,27 @@ env/
 venv/
 *.sqlite3
 
-# Django static
+# Django
 staticfiles/
+*/migrations/__pycache__/
 
 # React
 node_modules/
 build/
 dist/
 
-# IDEs y config
+# Archivos de entorno
+.env
+
+# Logs
+*.log
+yarn-error.log
+
+# IDEs y configuración
 .vscode/
 .idea/
-*.log
+
+# Tests / coverage
+htmlcov/
+.coverage
+.pytest_cache/
